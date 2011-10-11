@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/asm-all-3.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/datanucleus-api-jdo-3.0.0-m2.jar"/>
+	<classpathentry kind="lib" path="lib/datanucleus-core-3.0.0-m2.jar"/>
+	<classpathentry kind="lib" path="lib/datanucleus-enhancer-3.0.0-m2.jar"/>
+	<classpathentry kind="lib" path="lib/datanucleus-rdbms-3.0.0-m2.jar"/>
+	<classpathentry kind="lib" path="lib/jdo-api-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.15-bin.jar"/>
+	<classpathentry kind="lib" path="lib/proxool-0.9.1.jar"/>
+	<classpathentry kind="lib" path="lib/proxool-cglib.jar"/>
+	<classpathentry kind="lib" path="lib/sqljdbc4.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

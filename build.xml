@@ -1,0 +1,132 @@
+<!--
+===========================================================
+================= Tutorial Build File=====================
+===========================================================
+-->
+<project name="jdo_example" default="enhance">
+	<!--environment-->
+	<property environment="env"/>
+	<property file="datanucleus.properties"/>
+	<property name="project.location" location="."/>
+	<property name="Name" value="jdo_example"/>
+	<property name="name" value="${Name}"/>
+
+	<property name="java.dir" value="src/" />
+	<property name="lib.dir" value="lib/" />
+
+	<property name="classes.dir" value="bin/classes" />
+
+<!-- Classpath properties  -->
+	<!-- Classpath for running -->
+	<path id="lib.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${classes.dir}" />
+		<pathelement location="${basedir}" />
+	</path>
+
+	<!-- Classpath for compiling -->
+	<path id="compile.classpath">
+		<pathelement location="${classes.dir}" />
+		<path refid="lib.classpath" />
+	</path>
+	
+	 <!--
+    ===================================================================
+    TARGET : clean
+    ===================================================================
+    -->
+    <target name="clean">
+        <delete includeEmptyDirs="true" quiet="true">
+            <fileset dir="${classes.dir}" includes="**/*.class,**/*.properties,**/*.*"/>
+            <fileset dir="${basedir}" includes="datanucleus.log"/>
+        </delete>
+    </target>
+
+    <!--
+    ===================================================================
+    TARGET : prepare
+    ===================================================================
+    -->
+    <target name="prepare">
+        <mkdir dir="${classes.dir}"/>
+    </target>
+
+    <!--
+    ===================================================================
+    TARGET : compile.java
+    ===================================================================
+    -->
+    <target name="compile" depends="clean,prepare">
+        <echo message="==================================================================="/>
+        <echo message="Compile configuration:"/>
+        <echo message="java.dir       = ${java.dir}"/>
+        <echo message="classes.dir    = ${classes.dir}"/>
+        <echo message="==================================================================="/>
+        <javac srcdir="${java.dir}" destdir="${classes.dir}" debug="${project.build.debug}" classpathref="compile.classpath">
+            <include name="**/*.java"/>
+            <!-- REMOVE THIS IF USING JDK1.5 AND GETTING ERROR -->
+            <compilerarg value="-proc:none"/>
+        </javac>
+    </target>
+    
+   <!--
+    ===================================================================
+    TARGET :     copy jdo files
+    ===================================================================
+    -->
+    <target name="copy.metadata" depends="prepare">
+	        <copy todir="${classes.dir}">
+	            <fileset dir="${java.dir}" includes="**/*.jdo"/>
+	        </copy>
+    </target>
+    
+     <!--
+    ===================================================================
+    TARGET :     enhance the compiled classes for JDO persistence
+    ===================================================================
+    -->
+    <target name="enhance" depends="compile, copy.metadata" description="Enhance the compiled classes for JDO persistence.">
+    	
+        <!-- define the task enhancer -->
+        <taskdef name="enhancer" classname="org.datanucleus.enhancer.tools.EnhancerTask">
+            <classpath refid="compile.classpath"/>
+        </taskdef>
+
+        <!-- enhance -->
+        <enhancer classpathref="compile.classpath"
+            dir="${classes.dir}"
+            verbose="true">
+            <sysproperty key="log4j.configuration" value="file:log4j.properties"/>
+            <sysproperty key="datanucleus.metadata.validate" value="false"/>
+
+            <fileset dir="${classes.dir}">
+                <include name="**/*.class"/>
+            </fileset>
+        </enhancer>
+    	
+    	<echo message="Enhanced for JDO." />
+    	
+    </target>
+    
+    <!-- 
+    =====================================================
+    SchemaTool "create" 
+	 =====================================================    
+    -->
+    <target name="createschema" depends="enhance">
+        <taskdef name="schematool" classname="org.datanucleus.store.schema.SchemaToolTask">
+            <classpath refid="compile.classpath"/>
+        </taskdef>
+
+        <schematool classpathref="compile.classpath"
+            failonerror="true" verbose="true" mode="create" props="${basedir}/datanucleus.properties">
+            <fileset dir="${basedir}/bin/classes">
+                <include name="**/*.class"/>
+            </fileset>
+            <sysproperty key="log4j.configuration" value="file:${basedir}/log4j.properties"/>
+        </schematool>
+    </target>
+
+</project>
