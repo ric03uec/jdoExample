@@ -1,0 +1,4 @@
+This is an example of using JDO using Datanucleus implementation and ANT. 
+This example DOES NOT use the eclipse plugin for JDO and that was the intention of writing this in the first place.
+
+One should have the basic knowledge of using ANT before experimenting with this.
