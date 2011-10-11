@@ -12,9 +12,6 @@ import javax.jdo.annotations.Persistent;
 public class Data implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
-//	@Persistent(primaryKey="true", valueStrategy=IdGeneratorStrategy.IDENTITY)
-//	private int dataKey;
 	
 	@Persistent(persistenceModifier=PersistenceModifier.PERSISTENT)
 	private int intData;
@@ -30,10 +27,6 @@ public class Data implements Serializable {
 		this.stringData = stringValue;
 		this.date 	= dateValue;
 	}
-	
-//	public int getKey(){
-//		return this.dataKey;
-//	}
 	
 	public void setInt(int intData){
 		this.intData = intData;

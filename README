@@ -1,4 +1,24 @@
 This is an example of using JDO using Datanucleus implementation and ANT. 
 This example DOES NOT use the eclipse plugin for JDO and that was the intention of writing this in the first place.
 
+The objective of this example is to illustrate how to build JDO projects without eclipse. The development can be done using eclipse
+locally but when remote deployment is required, we cannot use eclipse to build the projects and require a command line method to do the same.
+
+In this example, the following things are shown
+a. an object 'Data' is created in the usual way.
+b. its instance variables are annotated to define their persistence properties
+c. the ORM is defined in package.jdo file in the same package
+d. the persistence properties of the project are defined in 'datanucleus.properties' file
+d. Main class shows the usage of the object.
+
 One should have the basic knowledge of using ANT before experimenting with this.
+
+To use with eclipe:
+
+1. go to File -> Import.. -> Import Existing Projects -> jdoExample
+
+Clean the project and it will enhance the objects.
+If eclipse does not find the default Builder then do the following :
+	After the project has been imported, Right Click the jdoExample Project in the Package Explorer
+   	go to Properties -> Builders -> New -> Ant Builder -> Browse Workspace -> jdoExample -> build.xml -> ok
+This will include build.xml as the default builder for the project.
